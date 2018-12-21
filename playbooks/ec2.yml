@@ -1,0 +1,31 @@
+---
+  - hosts: local
+    become: yes
+    vars:
+      instance_ids:
+        - 'i-092df01587a480518'
+        - 'i-0c63d1137a5de6f2a'
+        - 'i-0d379418530e18b84'
+      region: us-east-1
+#      profile: schhabria
+    
+    tasks:
+      - name: start ec2 instances
+        ec2:
+          instance_ids: "{{ instance_ids}}"
+          region: "{{ region }}"
+#          profile: "{{ profile }}"
+          state: running
+          wait: true
+        tags:
+          - start
+
+      - name: stop ec2 instances
+        ec2:
+          instance_ids: "{{ instance_ids}}"
+          region: "{{ region }}"
+ #         profile: "{{ profile }}"
+          state: stopped
+          wait: true
+        tags:
+          - stop

@@ -1,0 +1,31 @@
+---
+  - hosts: webserver
+    become: yes
+    vars_files:
+     -  loadb/vars/main.yml
+     -  vars/secret-var.yml
+    tasks:
+     - name: use secret password here
+       debug:
+         msg: "{{ secret_pass }}"
+
+     - name: upload php file
+       copy:
+         src: /etc/ansible/index.php
+         dest: "{{ path_to_app }}"
+         mode: 0755
+     - name: info page
+       copy:
+         dest: "{{ path_to_app }}/info.php"
+         content: "<h1> info about ip add {{ ansible_hostname }} </h1>"
+
+     - name: configure php.ini file
+       lineinfile:
+         path: /etc/php.ini
+         regexp: ^short_open_tag
+         line: 'short_open_tag=on'
+       notify: restart apache
+
+    handlers:
+     - name: restart apache
+       service: name=httpd state=restarted
