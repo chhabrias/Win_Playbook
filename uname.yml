@@ -1,8 +1,0 @@
----
-  - hosts: webserver:loadbalancer
-    tasks:
-     - name: OS type
-       shell: uname
-       register: output
-     - debug:
-        msg: "{{ output }}"

@@ -1,5 +1,0 @@
----
-# handlers file for loadb
-  - name: restart apache
-    service: name=httpd state=restarted
-
